@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
+import { addContact, getContacts } from '../../redux/contactsSlice';
+import { getFilter } from 'redux/filterSlice';
 
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
@@ -10,13 +10,13 @@ import css from './Phonebook.module.css'
 export const Phonebook = () => {
     const dispatch = useDispatch();
 
-    const contacts = useSelector(state => state.contacts);
-    const filter = useSelector(state => state.filter);
+    const contacts = useSelector(getContacts);
+    const filter = useSelector(getFilter);
     // const [contacts, setContacts] = useState(() => {return JSON.parse(window.localStorage.getItem('contacts')) ?? []});
 
-    useEffect(() => {
-        localStorage.setItem('contacts', JSON.stringify(contacts))
-    }, [contacts])
+    // useEffect(() => {
+    //     localStorage.setItem('contacts', JSON.stringify(contacts))
+    // }, [contacts])
 
     const getFilteredContacts = () => {
         if (!filter) {
