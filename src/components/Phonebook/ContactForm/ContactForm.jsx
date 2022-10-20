@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import PropTypes from "prop-types";
 import { nanoid } from 'nanoid';
+import { addContact, getContacts } from '../../../redux/contactsSlice';
+import { useSelector, useDispatch } from 'react-redux';
 import css from '../ContactForm/ContactForm.module.css'
 
-export const ContactForm = ({addContact}) => {
+export const ContactForm = () => {
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
 
@@ -23,10 +24,25 @@ export const ContactForm = ({addContact}) => {
         }
     }
 
+    const dispatch = useDispatch();
+    const contacts = useSelector(getContacts);
+
+    const contactAlreadyExists = (name, number) => {
+        return contacts.find((item) => item.name.toLocaleLowerCase() === name.toLocaleLowerCase() || item.number === number);
+    }
+
+    const addContactToList = (name, number) => {
+        if (contactAlreadyExists(name, number)) {
+            return alert(`${name} ${number} is already in Phonebook`);
+        }
+
+        dispatch(addContact({name, number}))
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        addContact(name, number);
+        addContactToList(name, number);
 
         setName('')
         setNumber('')
@@ -43,7 +59,7 @@ export const ContactForm = ({addContact}) => {
             name="contactName"
             value={name}
             onChange={handleChange}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            pattern="^[a-zA-Za-яА-Я]+(([' -][a-zA-Za-яА-Я ])?[a-zA-Za-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
             placeholder='Input name'
@@ -62,8 +78,4 @@ export const ContactForm = ({addContact}) => {
             className={css.input} />
         <button type='submit' className={css.button}>Add contact</button>
     </form>)
-}
-
-ContactForm.propTypes = {
-    addContact: PropTypes.func.isRequired,
 }

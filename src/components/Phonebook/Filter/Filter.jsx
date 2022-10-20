@@ -10,7 +10,6 @@ export const Filter = () => {
   const filter = useSelector(state => state.filter);
   
   const handleChange = (e) => {
-    console.log(e.target.value);
     dispatch(setFilter(e.target.value));
   }
   
