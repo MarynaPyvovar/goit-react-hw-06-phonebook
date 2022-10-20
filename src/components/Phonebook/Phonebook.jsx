@@ -12,11 +12,6 @@ export const Phonebook = () => {
 
     const contacts = useSelector(getContacts);
     const filter = useSelector(getFilter);
-    // const [contacts, setContacts] = useState(() => {return JSON.parse(window.localStorage.getItem('contacts')) ?? []});
-
-    // useEffect(() => {
-    //     localStorage.setItem('contacts', JSON.stringify(contacts))
-    // }, [contacts])
 
     const getFilteredContacts = () => {
         if (!filter) {
@@ -27,12 +22,12 @@ export const Phonebook = () => {
     }
 
     const contactAlreadyExists = (name, number) => {
-    return contacts.find((item) => item.name.toLocaleLowerCase() === name.toLocaleLowerCase() || item.number === number);
+        return contacts.find((item) => item.name.toLocaleLowerCase() === name.toLocaleLowerCase() || item.number === number);
     }
 
     const addContactToList = (name, number) => {
         if (contactAlreadyExists(name, number)) {
-        return alert(`${name} ${number} is already in Phonebook`);
+            return alert(`${name} ${number} is already in Phonebook`);
         }
 
         dispatch(addContact({name, number}))
